@@ -2,6 +2,16 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useApp } from "@/contexts/AppContext";
 import { useState } from "react";
 import { CalendarDays, Clock, Users, Timer, Hash } from "lucide-react";
+import doctor1 from "@/assets/doctor1.jpg";
+import doctor2 from "@/assets/doctor2.jpg";
+import doctor3 from "@/assets/doctor3.jpg";
+import doctor4 from "@/assets/doctor4.jpg";
+import doctor5 from "@/assets/doctor5.jpg";
+import doctor6 from "@/assets/doctor6.jpg";
+
+const doctorImages: Record<string, string> = {
+  d1: doctor1, d2: doctor2, d3: doctor3, d4: doctor4, d5: doctor5, d6: doctor6,
+};
 
 const BookAppointment = () => {
   const { doctorId } = useParams();
@@ -27,7 +37,6 @@ const BookAppointment = () => {
     );
   }
 
-  // Generate next 7 days
   const dates = Array.from({ length: 7 }, (_, i) => {
     const d = new Date();
     d.setDate(d.getDate() + i);
@@ -60,7 +69,6 @@ const BookAppointment = () => {
           <div className="mb-4 text-5xl">✅</div>
           <h2 className="mb-2 text-2xl font-bold text-foreground">Appointment Booked!</h2>
           <p className="mb-6 text-muted-foreground">Your appointment with {doctor.name} is confirmed</p>
-
           <div className="mb-6 grid grid-cols-3 gap-3">
             <div className="rounded-lg bg-accent p-4">
               <Users size={20} className="mx-auto mb-1 text-primary" />
@@ -78,7 +86,6 @@ const BookAppointment = () => {
               <p className="text-2xl font-bold text-primary">{booked.token}</p>
             </div>
           </div>
-
           <div className="flex gap-3">
             <button onClick={() => navigate("/my-appointments")} className="gradient-primary flex-1 rounded-lg py-2.5 text-sm font-semibold text-primary-foreground">My Appointments</button>
             <button onClick={() => navigate("/doctors")} className="flex-1 rounded-lg border border-border py-2.5 text-sm font-semibold text-foreground">Back to Doctors</button>
@@ -93,7 +100,7 @@ const BookAppointment = () => {
       <div className="container mx-auto max-w-2xl">
         {/* Doctor info */}
         <div className="mb-8 flex items-center gap-4 rounded-xl border border-border bg-card p-6 shadow-card">
-          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-accent text-3xl">{doctor.image}</div>
+          <img src={doctorImages[doctor.id]} alt={doctor.name} width={64} height={64} className="h-16 w-16 rounded-full object-cover" />
           <div>
             <h1 className="text-xl font-bold text-card-foreground">{doctor.name}</h1>
             <p className="text-sm text-muted-foreground">{doctor.specialty}</p>

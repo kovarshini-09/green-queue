@@ -1,12 +1,13 @@
-import { Heart, Brain, Bone, Eye, Baby, Ear } from "lucide-react";
+import serviceBp from "@/assets/service-bp.jpg";
+import serviceThyroid from "@/assets/service-thyroid.jpg";
+import serviceXray from "@/assets/service-xray.jpg";
+import serviceCtscan from "@/assets/service-ctscan.jpg";
 
 const services = [
-  { icon: Heart, name: "Cardiology", desc: "Heart health checkups, ECG, and consultations" },
-  { icon: Brain, name: "Neurology", desc: "Brain and nervous system specialist care" },
-  { icon: Bone, name: "Orthopedics", desc: "Bone, joint, and muscle treatments" },
-  { icon: Eye, name: "Ophthalmology", desc: "Eye exams, vision care, and treatments" },
-  { icon: Baby, name: "Pediatrics", desc: "Comprehensive child healthcare services" },
-  { icon: Ear, name: "ENT", desc: "Ear, nose, and throat specialist care" },
+  { image: serviceBp, name: "Blood Pressure", desc: "Accurate blood pressure monitoring and hypertension management with digital sphygmomanometers" },
+  { image: serviceThyroid, name: "Thyroid", desc: "Complete thyroid function tests, ultrasound imaging, and specialist endocrine consultations" },
+  { image: serviceXray, name: "X-Ray", desc: "High-resolution digital X-ray imaging for bones, chest, and dental diagnostics" },
+  { image: serviceCtscan, name: "CT Scan", desc: "Advanced computed tomography scanning for detailed cross-sectional body imaging" },
 ];
 
 const ServicesPage = () => (
@@ -14,12 +15,14 @@ const ServicesPage = () => (
     <div className="container mx-auto">
       <h1 className="mb-2 text-3xl font-bold text-foreground">Our Services</h1>
       <p className="mb-8 text-muted-foreground">Comprehensive healthcare services with smart queue management</p>
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-6 sm:grid-cols-2">
         {services.map((s, i) => (
-          <div key={i} className="rounded-xl border border-border bg-card p-6 shadow-card transition-all hover:shadow-card-hover">
-            <div className="mb-4 inline-flex rounded-lg bg-accent p-3 text-primary"><s.icon size={24} /></div>
-            <h3 className="mb-2 text-lg font-semibold text-card-foreground">{s.name}</h3>
-            <p className="text-sm text-muted-foreground">{s.desc}</p>
+          <div key={i} className="overflow-hidden rounded-xl border border-border bg-card shadow-card transition-all hover:shadow-card-hover">
+            <img src={s.image} alt={s.name} loading="lazy" width={640} height={512} className="h-48 w-full object-cover" />
+            <div className="p-6">
+              <h3 className="mb-2 text-lg font-semibold text-card-foreground">{s.name}</h3>
+              <p className="text-sm text-muted-foreground">{s.desc}</p>
+            </div>
           </div>
         ))}
       </div>
