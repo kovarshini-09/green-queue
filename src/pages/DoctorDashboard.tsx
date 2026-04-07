@@ -1,6 +1,16 @@
 import { useApp } from "@/contexts/AppContext";
 import { useNavigate } from "react-router-dom";
 import { CalendarDays, CheckCircle2, IndianRupee, Clock } from "lucide-react";
+import doctor1 from "@/assets/doctor1.jpg";
+import doctor2 from "@/assets/doctor2.jpg";
+import doctor3 from "@/assets/doctor3.jpg";
+import doctor4 from "@/assets/doctor4.jpg";
+import doctor5 from "@/assets/doctor5.jpg";
+import doctor6 from "@/assets/doctor6.jpg";
+
+const doctorImages: Record<string, string> = {
+  d1: doctor1, d2: doctor2, d3: doctor3, d4: doctor4, d5: doctor5, d6: doctor6,
+};
 
 const DoctorDashboard = () => {
   const { currentDoctor, getDoctorAppointments, getDoctorStats, updateAppointmentStatus } = useApp();
@@ -27,9 +37,18 @@ const DoctorDashboard = () => {
   return (
     <div className="px-4 py-10">
       <div className="container mx-auto max-w-4xl">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground">Welcome, {currentDoctor.name}</h1>
-          <p className="text-muted-foreground">{currentDoctor.specialty}</p>
+        <div className="mb-8 flex items-center gap-4">
+          <img
+            src={doctorImages[currentDoctor.id]}
+            alt={currentDoctor.name}
+            width={80}
+            height={80}
+            className="h-20 w-20 rounded-full object-cover border-2 border-primary"
+          />
+          <div>
+            <h1 className="text-3xl font-bold text-foreground">Welcome, {currentDoctor.name}</h1>
+            <p className="text-muted-foreground">{currentDoctor.specialty}</p>
+          </div>
         </div>
 
         {/* Stats cards */}

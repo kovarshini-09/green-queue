@@ -1,6 +1,21 @@
 import { Link } from "react-router-dom";
 import { useApp } from "@/contexts/AppContext";
 import { Star } from "lucide-react";
+import doctor1 from "@/assets/doctor1.jpg";
+import doctor2 from "@/assets/doctor2.jpg";
+import doctor3 from "@/assets/doctor3.jpg";
+import doctor4 from "@/assets/doctor4.jpg";
+import doctor5 from "@/assets/doctor5.jpg";
+import doctor6 from "@/assets/doctor6.jpg";
+
+const doctorImages: Record<string, string> = {
+  d1: doctor1,
+  d2: doctor2,
+  d3: doctor3,
+  d4: doctor4,
+  d5: doctor5,
+  d6: doctor6,
+};
 
 const DoctorsPage = () => {
   const { doctors } = useApp();
@@ -15,9 +30,14 @@ const DoctorsPage = () => {
           {doctors.map(doc => (
             <div key={doc.id} className="group rounded-xl border border-border bg-card p-6 shadow-card transition-all hover:shadow-card-hover">
               <div className="mb-4 flex items-center gap-4">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-accent text-3xl">
-                  {doc.image}
-                </div>
+                <img
+                  src={doctorImages[doc.id]}
+                  alt={doc.name}
+                  loading="lazy"
+                  width={64}
+                  height={64}
+                  className="h-16 w-16 rounded-full object-cover"
+                />
                 <div>
                   <h3 className="text-lg font-semibold text-card-foreground">{doc.name}</h3>
                   <p className="text-sm text-muted-foreground">{doc.specialty}</p>
