@@ -5,7 +5,7 @@ import { useState } from "react";
 import mediQueueLogo from "@/assets/mediqueue-logo.png";
 
 const Navbar = () => {
-  const { currentPatient, currentDoctor, logoutPatient, logoutDoctor } = useApp();
+  const { currentPatient, currentDoctor, currentAssistant, logoutPatient, logoutDoctor, logoutAssistant } = useApp();
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -41,6 +41,12 @@ const Navbar = () => {
               <Link to="/doctor-dashboard" className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">Dashboard</Link>
               <button onClick={logoutDoctor} className="rounded-lg border border-border p-2 text-muted-foreground hover:text-foreground"><LogOut size={16} /></button>
             </div>
+          ) : currentAssistant ? (
+            <div className="flex items-center gap-2">
+              <Link to="/assistant-dashboard" className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">Dashboard</Link>
+              <span className="text-sm text-muted-foreground">{currentAssistant.name}</span>
+              <button onClick={logoutAssistant} className="rounded-lg border border-border p-2 text-muted-foreground hover:text-foreground"><LogOut size={16} /></button>
+            </div>
           ) : currentPatient ? (
             <div className="flex items-center gap-2">
               <Link to="/my-appointments" className="text-sm font-medium text-primary">My Appointments</Link>
@@ -50,6 +56,7 @@ const Navbar = () => {
           ) : (
             <>
               <Link to="/doctor-login" className="text-sm font-medium text-muted-foreground hover:text-primary">Doctor Login</Link>
+              <Link to="/assistant-login" className="text-sm font-medium text-muted-foreground hover:text-primary">Assistant Login</Link>
               <Link to="/create-account" className="rounded-lg bg-primary px-5 py-2 text-sm font-medium text-primary-foreground transition-all hover:opacity-90">Create Account</Link>
             </>
           )}
@@ -71,7 +78,12 @@ const Navbar = () => {
               </Link>
             ))}
             <hr className="border-border" />
-            {currentPatient ? (
+            {currentAssistant ? (
+              <>
+                <Link to="/assistant-dashboard" onClick={() => setMobileOpen(false)} className="text-sm font-medium text-primary">Dashboard</Link>
+                <button onClick={() => { logoutAssistant(); setMobileOpen(false); }} className="text-left text-sm text-muted-foreground">Logout</button>
+              </>
+            ) : currentPatient ? (
               <>
                 <Link to="/my-appointments" onClick={() => setMobileOpen(false)} className="text-sm font-medium text-primary">My Appointments</Link>
                 <button onClick={() => { logoutPatient(); setMobileOpen(false); }} className="text-left text-sm text-muted-foreground">Logout</button>
@@ -79,6 +91,7 @@ const Navbar = () => {
             ) : (
               <>
                 <Link to="/doctor-login" onClick={() => setMobileOpen(false)} className="text-sm text-muted-foreground">Doctor Login</Link>
+                <Link to="/assistant-login" onClick={() => setMobileOpen(false)} className="text-sm text-muted-foreground">Assistant Login</Link>
                 <Link to="/create-account" onClick={() => setMobileOpen(false)} className="rounded-lg bg-primary px-4 py-2 text-center text-sm font-medium text-primary-foreground">Create Account</Link>
               </>
             )}
