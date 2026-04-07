@@ -18,6 +18,13 @@ export interface Doctor {
   password: string;
 }
 
+export interface Service {
+  id: string;
+  name: string;
+  fee: number;
+  availableSlots: string[];
+}
+
 export interface Appointment {
   id: string;
   patientId: string;
@@ -29,11 +36,13 @@ export interface Appointment {
   status: "pending" | "completed";
   tokenNumber: number;
   fee: number;
+  type: "doctor" | "service";
 }
 
 interface AppContextType {
   patients: Patient[];
   doctors: Doctor[];
+  services: Service[];
   appointments: Appointment[];
   currentPatient: Patient | null;
   currentDoctor: Doctor | null;
@@ -61,6 +70,13 @@ const defaultDoctors: Doctor[] = [
   { id: "d6", name: "Dr. Robert Lee", specialty: "ENT Specialist", image: "👨‍⚕️", fee: 650, availableSlots: ["09:00", "10:00", "11:00", "14:00", "15:00"], password: "doctor123" },
 ];
 
+const defaultServices: Service[] = [
+  { id: "s1", name: "Blood Pressure", fee: 200, availableSlots: ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "14:00", "14:30", "15:00", "15:30", "16:00"] },
+  { id: "s2", name: "Thyroid", fee: 500, availableSlots: ["09:00", "09:30", "10:00", "10:30", "11:00", "14:00", "14:30", "15:00"] },
+  { id: "s3", name: "X-Ray", fee: 800, availableSlots: ["09:00", "10:00", "11:00", "12:00", "14:00", "15:00", "16:00"] },
+  { id: "s4", name: "CT Scan", fee: 3000, availableSlots: ["09:00", "10:00", "11:00", "14:00", "15:00"] },
+];
+
 export function AppProvider({ children }: { children: ReactNode }) {
   const [patients, setPatients] = useState<Patient[]>(() => {
     const saved = localStorage.getItem("hq_patients");
@@ -80,6 +96,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   });
 
   const doctors = defaultDoctors;
+  const services = defaultServices;
 
   useEffect(() => { localStorage.setItem("hq_patients", JSON.stringify(patients)); }, [patients]);
   useEffect(() => { localStorage.setItem("hq_appointments", JSON.stringify(appointments)); }, [appointments]);
@@ -139,7 +156,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AppContext.Provider value={{ patients, doctors, appointments, currentPatient, currentDoctor, registerPatient, loginPatient, loginDoctor, logoutPatient, logoutDoctor, bookAppointment, updateAppointmentStatus, getQueueInfo, getPatientAppointments, getDoctorAppointments, getDoctorStats }}>
+    <AppContext.Provider value={{ patients, doctors, services, appointments, currentPatient, currentDoctor, registerPatient, loginPatient, loginDoctor, logoutPatient, logoutDoctor, bookAppointment, updateAppointmentStatus, getQueueInfo, getPatientAppointments, getDoctorAppointments, getDoctorStats }}>
       {children}
     </AppContext.Provider>
   );

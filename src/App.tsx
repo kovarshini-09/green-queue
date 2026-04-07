@@ -13,6 +13,7 @@ import PatientAppointments from "./pages/PatientAppointments";
 import DoctorLogin from "./pages/DoctorLogin";
 import DoctorDashboard from "./pages/DoctorDashboard";
 import ServicesPage from "./pages/ServicesPage";
+import BookService from "./pages/BookService";
 import ContactPage from "./pages/ContactPage";
 import NotFound from "./pages/NotFound";
 
@@ -35,6 +36,7 @@ const App = () => (
             <Route path="/doctor-login" element={<DoctorLogin />} />
             <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
             <Route path="/services" element={<ServicesPage />} />
+            <Route path="/book-service/:serviceId" element={<BookService />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

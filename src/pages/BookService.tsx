@@ -2,35 +2,33 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useApp } from "@/contexts/AppContext";
 import { useState } from "react";
 import { CalendarDays, Clock, Users, Timer, Hash } from "lucide-react";
-import doctor1 from "@/assets/doctor1.jpg";
-import doctor2 from "@/assets/doctor2.jpg";
-import doctor3 from "@/assets/doctor3.jpg";
-import doctor4 from "@/assets/doctor4.jpg";
-import doctor5 from "@/assets/doctor5.jpg";
-import doctor6 from "@/assets/doctor6.jpg";
+import serviceBp from "@/assets/service-bp.jpg";
+import serviceThyroid from "@/assets/service-thyroid.jpg";
+import serviceXray from "@/assets/service-xray.jpg";
+import serviceCtscan from "@/assets/service-ctscan.jpg";
 
-const doctorImages: Record<string, string> = {
-  d1: doctor1, d2: doctor2, d3: doctor3, d4: doctor4, d5: doctor5, d6: doctor6,
+const serviceImages: Record<string, string> = {
+  s1: serviceBp, s2: serviceThyroid, s3: serviceXray, s4: serviceCtscan,
 };
 
-const BookAppointment = () => {
-  const { doctorId } = useParams();
+const BookService = () => {
+  const { serviceId } = useParams();
   const navigate = useNavigate();
-  const { doctors, currentPatient, bookAppointment, getQueueInfo, appointments } = useApp();
-  const doctor = doctors.find(d => d.id === doctorId);
+  const { services, currentPatient, bookAppointment, getQueueInfo, appointments } = useApp();
+  const service = services.find(s => s.id === serviceId);
 
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
   const [booked, setBooked] = useState<{ position: number; waitingTime: number; token: number } | null>(null);
 
-  if (!doctor) return <div className="p-10 text-center text-muted-foreground">Doctor not found</div>;
+  if (!service) return <div className="p-10 text-center text-muted-foreground">Service not found</div>;
 
   if (!currentPatient) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center px-4">
         <div className="text-center">
           <h2 className="mb-2 text-2xl font-bold text-foreground">Please create an account first</h2>
-          <p className="mb-4 text-muted-foreground">You need to be logged in to book an appointment</p>
+          <p className="mb-4 text-muted-foreground">You need to be logged in to book a service</p>
           <button onClick={() => navigate("/create-account")} className="gradient-primary rounded-lg px-6 py-2.5 font-medium text-primary-foreground">Create Account</button>
         </div>
       </div>
@@ -44,21 +42,21 @@ const BookAppointment = () => {
   });
 
   const isSlotBooked = (time: string) => {
-    return appointments.some(a => a.doctorId === doctor.id && a.date === selectedDate && a.time === time && a.patientId === currentPatient.id);
+    return appointments.some(a => a.doctorId === service.id && a.date === selectedDate && a.time === time && a.patientId === currentPatient.id);
   };
 
   const handleBook = () => {
     if (!selectedDate || !selectedTime) return;
-    const queueInfo = getQueueInfo(doctor.id, selectedDate, selectedTime);
+    const queueInfo = getQueueInfo(service.id, selectedDate, selectedTime);
     bookAppointment({
       patientId: currentPatient.id,
       patientName: currentPatient.name,
-      doctorId: doctor.id,
-      doctorName: doctor.name,
+      doctorId: service.id,
+      doctorName: service.name,
       date: selectedDate,
       time: selectedTime,
-      fee: doctor.fee,
-      type: "doctor",
+      fee: service.fee,
+      type: "service",
     });
     setBooked(queueInfo);
   };
@@ -68,8 +66,8 @@ const BookAppointment = () => {
       <div className="flex min-h-[60vh] items-center justify-center px-4">
         <div className="w-full max-w-md rounded-xl border border-border bg-card p-8 text-center shadow-card">
           <div className="mb-4 text-5xl">✅</div>
-          <h2 className="mb-2 text-2xl font-bold text-foreground">Appointment Booked!</h2>
-          <p className="mb-6 text-muted-foreground">Your appointment with {doctor.name} is confirmed</p>
+          <h2 className="mb-2 text-2xl font-bold text-foreground">Service Booked!</h2>
+          <p className="mb-6 text-muted-foreground">Your {service.name} appointment is confirmed</p>
           <div className="mb-6 grid grid-cols-3 gap-3">
             <div className="rounded-lg bg-accent p-4">
               <Users size={20} className="mx-auto mb-1 text-primary" />
@@ -89,7 +87,7 @@ const BookAppointment = () => {
           </div>
           <div className="flex gap-3">
             <button onClick={() => navigate("/my-appointments")} className="gradient-primary flex-1 rounded-lg py-2.5 text-sm font-semibold text-primary-foreground">My Appointments</button>
-            <button onClick={() => navigate("/doctors")} className="flex-1 rounded-lg border border-border py-2.5 text-sm font-semibold text-foreground">Back to Doctors</button>
+            <button onClick={() => navigate("/services")} className="flex-1 rounded-lg border border-border py-2.5 text-sm font-semibold text-foreground">Back to Services</button>
           </div>
         </div>
       </div>
@@ -99,13 +97,12 @@ const BookAppointment = () => {
   return (
     <div className="px-4 py-10">
       <div className="container mx-auto max-w-2xl">
-        {/* Doctor info */}
+        {/* Service info */}
         <div className="mb-8 flex items-center gap-4 rounded-xl border border-border bg-card p-6 shadow-card">
-          <img src={doctorImages[doctor.id]} alt={doctor.name} width={64} height={64} className="h-16 w-16 rounded-full object-cover" />
+          <img src={serviceImages[service.id]} alt={service.name} width={80} height={64} className="h-16 w-20 rounded-lg object-cover" />
           <div>
-            <h1 className="text-xl font-bold text-card-foreground">{doctor.name}</h1>
-            <p className="text-sm text-muted-foreground">{doctor.specialty}</p>
-            <p className="text-lg font-bold text-primary">₹{doctor.fee}</p>
+            <h1 className="text-xl font-bold text-card-foreground">{service.name}</h1>
+            <p className="text-lg font-bold text-primary">₹{service.fee}</p>
           </div>
         </div>
 
@@ -136,7 +133,7 @@ const BookAppointment = () => {
               <Clock size={16} className="text-primary" /> Select Time
             </label>
             <div className="flex flex-wrap gap-2">
-              {doctor.availableSlots.map(t => {
+              {service.availableSlots.map(t => {
                 const taken = isSlotBooked(t);
                 return (
                   <button key={t} disabled={taken} onClick={() => setSelectedTime(t)}
@@ -154,7 +151,7 @@ const BookAppointment = () => {
           <div className="mb-6 rounded-lg border border-border bg-accent p-4">
             <h3 className="mb-2 text-sm font-semibold text-foreground">📊 Queue Preview</h3>
             {(() => {
-              const pending = appointments.filter(a => a.doctorId === doctor.id && a.date === selectedDate && a.status === "pending");
+              const pending = appointments.filter(a => a.doctorId === service.id && a.date === selectedDate && a.status === "pending");
               const pos = pending.length + 1;
               const wait = pending.length * 15;
               return (
@@ -177,4 +174,4 @@ const BookAppointment = () => {
   );
 };
 
-export default BookAppointment;
+export default BookService;
