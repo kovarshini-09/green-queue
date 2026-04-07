@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useApp } from "@/contexts/AppContext";
 import { LogOut, Menu, X } from "lucide-react";
 import { useState } from "react";
+import mediQueueLogo from "@/assets/mediqueue-logo.png";
 
 const Navbar = () => {
   const { currentPatient, currentDoctor, logoutPatient, logoutDoctor } = useApp();
@@ -21,7 +22,7 @@ const Navbar = () => {
     <nav className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur">
       <div className="container mx-auto flex items-center justify-between px-4 py-3">
         <Link to="/" className="flex items-center gap-2 text-xl font-bold text-primary">
-          <span className="text-2xl">🏥</span>
+          <img src={mediQueueLogo} alt="MediQueue" width={32} height={32} className="h-8 w-8" />
           <span>MediQueue</span>
         </Link>
 
