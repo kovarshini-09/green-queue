@@ -25,6 +25,13 @@ export interface Service {
   availableSlots: string[];
 }
 
+export interface Assistant {
+  id: string;
+  name: string;
+  serviceId: string;
+  password: string;
+}
+
 export interface Appointment {
   id: string;
   patientId: string;
@@ -43,20 +50,26 @@ interface AppContextType {
   patients: Patient[];
   doctors: Doctor[];
   services: Service[];
+  assistants: Assistant[];
   appointments: Appointment[];
   currentPatient: Patient | null;
   currentDoctor: Doctor | null;
+  currentAssistant: Assistant | null;
   registerPatient: (p: Omit<Patient, "id">) => Patient;
   loginPatient: (email: string, password: string) => Patient | null;
   loginDoctor: (email: string, password: string) => Doctor | null;
+  loginAssistant: (name: string, password: string) => Assistant | null;
   logoutPatient: () => void;
   logoutDoctor: () => void;
+  logoutAssistant: () => void;
   bookAppointment: (apt: Omit<Appointment, "id" | "tokenNumber" | "status">) => Appointment;
   updateAppointmentStatus: (id: string, status: "pending" | "completed") => void;
   getQueueInfo: (doctorId: string, date: string, time: string) => { position: number; waitingTime: number; token: number };
   getPatientAppointments: (patientId: string) => Appointment[];
   getDoctorAppointments: (doctorId: string) => Appointment[];
+  getServiceAppointments: (serviceId: string) => Appointment[];
   getDoctorStats: (doctorId: string) => { total: number; completed: number; earnings: number };
+  getServiceStats: (serviceId: string) => { total: number; completed: number; earnings: number };
 }
 
 const AppContext = createContext<AppContextType | null>(null);
@@ -77,6 +90,13 @@ const defaultServices: Service[] = [
   { id: "s4", name: "CT Scan", fee: 3000, availableSlots: ["09:00", "10:00", "11:00", "14:00", "15:00"] },
 ];
 
+const defaultAssistants: Assistant[] = [
+  { id: "a1", name: "BP Assistant", serviceId: "s1", password: "assistant123" },
+  { id: "a2", name: "Thyroid Assistant", serviceId: "s2", password: "assistant123" },
+  { id: "a3", name: "X-Ray Assistant", serviceId: "s3", password: "assistant123" },
+  { id: "a4", name: "CT Scan Assistant", serviceId: "s4", password: "assistant123" },
+];
+
 export function AppProvider({ children }: { children: ReactNode }) {
   const [patients, setPatients] = useState<Patient[]>(() => {
     const saved = localStorage.getItem("hq_patients");
@@ -94,14 +114,20 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const saved = localStorage.getItem("hq_currentDoctor");
     return saved ? JSON.parse(saved) : null;
   });
+  const [currentAssistant, setCurrentAssistant] = useState<Assistant | null>(() => {
+    const saved = localStorage.getItem("hq_currentAssistant");
+    return saved ? JSON.parse(saved) : null;
+  });
 
   const doctors = defaultDoctors;
   const services = defaultServices;
+  const assistants = defaultAssistants;
 
   useEffect(() => { localStorage.setItem("hq_patients", JSON.stringify(patients)); }, [patients]);
   useEffect(() => { localStorage.setItem("hq_appointments", JSON.stringify(appointments)); }, [appointments]);
   useEffect(() => { localStorage.setItem("hq_currentPatient", JSON.stringify(currentPatient)); }, [currentPatient]);
   useEffect(() => { localStorage.setItem("hq_currentDoctor", JSON.stringify(currentDoctor)); }, [currentDoctor]);
+  useEffect(() => { localStorage.setItem("hq_currentAssistant", JSON.stringify(currentAssistant)); }, [currentAssistant]);
 
   const registerPatient = (p: Omit<Patient, "id">) => {
     const newPatient: Patient = { ...p, id: "p" + Date.now() };
@@ -122,8 +148,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
     return null;
   };
 
+  const loginAssistant = (name: string, password: string) => {
+    const a = assistants.find(ast => ast.name.toLowerCase().replace(/\s+/g, "") === name.toLowerCase().replace(/\s+/g, "") && ast.password === password);
+    if (a) { setCurrentAssistant(a); return a; }
+    return null;
+  };
+
   const logoutPatient = () => { setCurrentPatient(null); localStorage.removeItem("hq_currentPatient"); };
   const logoutDoctor = () => { setCurrentDoctor(null); localStorage.removeItem("hq_currentDoctor"); };
+  const logoutAssistant = () => { setCurrentAssistant(null); localStorage.removeItem("hq_currentAssistant"); };
 
   const bookAppointment = (apt: Omit<Appointment, "id" | "tokenNumber" | "status">) => {
     const sameDayDoctor = appointments.filter(a => a.doctorId === apt.doctorId && a.date === apt.date);
@@ -148,6 +181,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const getPatientAppointments = (patientId: string) => appointments.filter(a => a.patientId === patientId);
   const getDoctorAppointments = (doctorId: string) => appointments.filter(a => a.doctorId === doctorId);
+  const getServiceAppointments = (serviceId: string) => appointments.filter(a => a.doctorId === serviceId && a.type === "service");
 
   const getDoctorStats = (doctorId: string) => {
     const docApts = appointments.filter(a => a.doctorId === doctorId);
@@ -155,8 +189,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
     return { total: docApts.length, completed: completed.length, earnings: completed.reduce((s, a) => s + a.fee, 0) };
   };
 
+  const getServiceStats = (serviceId: string) => {
+    const svcApts = appointments.filter(a => a.doctorId === serviceId && a.type === "service");
+    const completed = svcApts.filter(a => a.status === "completed");
+    return { total: svcApts.length, completed: completed.length, earnings: completed.reduce((s, a) => s + a.fee, 0) };
+  };
+
   return (
-    <AppContext.Provider value={{ patients, doctors, services, appointments, currentPatient, currentDoctor, registerPatient, loginPatient, loginDoctor, logoutPatient, logoutDoctor, bookAppointment, updateAppointmentStatus, getQueueInfo, getPatientAppointments, getDoctorAppointments, getDoctorStats }}>
+    <AppContext.Provider value={{ patients, doctors, services, assistants, appointments, currentPatient, currentDoctor, currentAssistant, registerPatient, loginPatient, loginDoctor, loginAssistant, logoutPatient, logoutDoctor, logoutAssistant, bookAppointment, updateAppointmentStatus, getQueueInfo, getPatientAppointments, getDoctorAppointments, getServiceAppointments, getDoctorStats, getServiceStats }}>
       {children}
     </AppContext.Provider>
   );
