@@ -58,6 +58,7 @@ const BookAppointment = () => {
       date: selectedDate,
       time: selectedTime,
       fee: doctor.fee,
+      type: "doctor",
     });
     setBooked(queueInfo);
   };
