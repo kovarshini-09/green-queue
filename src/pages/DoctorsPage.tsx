@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useApp } from "@/contexts/AppContext";
-import { Star } from "lucide-react";
+import { Star, RefreshCw } from "lucide-react";
 
 import doctor1 from "@/assets/doctor1.jpg";
 import doctor2 from "@/assets/doctor2.jpg";
@@ -13,30 +13,48 @@ import doctor8 from "@/assets/doctor8.jpg";
 import doctor9 from "@/assets/doctor9.jpg";
 
 const doctorImages: Record<string, string> = {
-  d1: doctor1,
-  d2: doctor2,
-  d3: doctor3,
-  d4: doctor4,
-  d5: doctor5,
-  d6: doctor6,
-  d7: doctor7,
-  d8: doctor8,
-  d9: doctor9,
+  d1: doctor1, // Dr. Sarah Johnson (female)
+  d2: doctor2, // Dr. James Patel (male)
+  d3: doctor3, // Dr. Meera Singh (female)
+  d4: doctor4, // Dr. Arjun Rao (male)
+  d5: doctor5, // Dr. Nisha Kapoor (female)
+  d6: doctor6, // Dr. Ravi Singh (male)
+  d7: doctor7, // Dr. Priya Sharma (female)
+  d8: doctor8, // Dr. Vikram Gupta (male)
+  d9: doctor9, // Dr. Anjali Verma (female)
+  d10: doctor4, // Dr. Karan Mehta (male) - reusing male image
+  d11: doctor5, // Dr. Sneha Agarwal (female) - reusing female image
+  d12: doctor6, // Dr. Rohan Jain (male) - reusing male image
 };
 
 const DoctorsPage = () => {
-  const { doctors } = useApp();
+  const { doctors, refreshData } = useApp();
+
+  const handleRefresh = async () => {
+    await refreshData();
+  };
 
   return (
     <div className="px-4 py-10">
       <div className="container mx-auto">
-        <h1 className="mb-2 text-3xl font-bold text-foreground">
-          Our Doctors
-        </h1>
-
-        <p className="mb-8 text-muted-foreground">
-          Choose a doctor and book your appointment with real-time queue tracking
-        </p>
+        <div className="mb-8 flex items-center justify-between">
+          <div>
+            <h1 className="mb-2 text-3xl font-bold text-foreground">
+              Our Doctors
+            </h1>
+            <p className="text-muted-foreground">
+              Choose a doctor and book your appointment with real-time queue tracking
+            </p>
+          </div>
+          <button
+            onClick={handleRefresh}
+            className="flex items-center gap-2 rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium text-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
+            title="Refresh data from database"
+          >
+            <RefreshCw size={16} />
+            Refresh
+          </button>
+        </div>
 
         {/* GRID */}
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -44,7 +62,7 @@ const DoctorsPage = () => {
             <div
               key={doc.id}
               className="group rounded-xl border border-border bg-card p-6 shadow-card transition-all duration-300 hover:shadow-xl hover:-translate-y-2 hover:scale-[1.03] cursor-pointer"
-           >
+            >
               {/* PROFILE */}
               <div className="mb-4 flex items-center gap-4">
                 <img

@@ -6,16 +6,25 @@ import serviceBp from "@/assets/service-bp.jpg";
 import serviceThyroid from "@/assets/service-thyroid.jpg";
 import serviceXray from "@/assets/service-xray.jpg";
 import serviceCtscan from "@/assets/service-ctscan.jpg";
+import serviceSugar from "@/assets/service-sugar.jpg";
+import serviceMri from "@/assets/service-mri.jpg";
+import serviceGlucose from "@/assets/service-glucose.jpg";
 
 const serviceImages: Record<string, string> = {
-  s1: serviceBp, s2: serviceThyroid, s3: serviceXray, s4: serviceCtscan,
+  s1: serviceBp,
+  s2: serviceThyroid,
+  s3: serviceXray,
+  s4: serviceCtscan,
+  s5: serviceSugar,
+  s6: serviceMri,
+  s7: serviceGlucose,
 };
 
 const BookService = () => {
   const { serviceId } = useParams();
   const navigate = useNavigate();
   const { services, currentPatient, bookAppointment, getQueueInfo, appointments } = useApp();
-  const service = services.find(s => s.id === serviceId);
+  const service = services.find(s => s.id === serviceId || s._id === serviceId);
 
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
@@ -41,21 +50,25 @@ const BookService = () => {
     return d.toISOString().split("T")[0];
   });
 
+  const patientId = currentPatient.id || currentPatient._id;
+
   const isSlotBooked = (time: string) => {
-    return appointments.some(a => a.doctorId === service.id && a.date === selectedDate && a.time === time && a.patientId === currentPatient.id);
+    return appointments.some(
+      a => a.doctorId === service.id && a.date === selectedDate && a.time === time && a.patientId === patientId
+    );
   };
 
   const handleBook = () => {
     if (!selectedDate || !selectedTime) return;
     const queueInfo = getQueueInfo(service.id, selectedDate, selectedTime);
     bookAppointment({
-      patientId: currentPatient.id,
+      patientId: patientId,
       patientName: currentPatient.name,
       doctorId: service.id,
       doctorName: service.name,
       date: selectedDate,
       time: selectedTime,
-      fee: service.fee,
+      fee: service.fee ?? service.fees,
       type: "service",
     });
     setBooked(queueInfo);
@@ -99,10 +112,10 @@ const BookService = () => {
       <div className="container mx-auto max-w-2xl">
         {/* Service info */}
         <div className="mb-8 flex items-center gap-4 rounded-xl border border-border bg-card p-6 shadow-card">
-          <img src={serviceImages[service.id]} alt={service.name} width={80} height={64} className="h-16 w-20 rounded-lg object-cover" />
+          <img src={serviceImages[service.id] || serviceCtscan} alt={service.name} width={80} height={64} className="h-16 w-20 rounded-lg object-cover" />
           <div>
             <h1 className="text-xl font-bold text-card-foreground">{service.name}</h1>
-            <p className="text-lg font-bold text-primary">₹{service.fee}</p>
+            <p className="text-lg font-bold text-primary">₹{service.fee ?? service.fees}</p>
           </div>
         </div>
 

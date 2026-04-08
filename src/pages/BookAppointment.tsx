@@ -17,7 +17,7 @@ const BookAppointment = () => {
   const { doctorId } = useParams();
   const navigate = useNavigate();
   const { doctors, currentPatient, bookAppointment, getQueueInfo, appointments } = useApp();
-  const doctor = doctors.find(d => d.id === doctorId);
+  const doctor = doctors.find(d => d.id === doctorId || d._id === doctorId);
 
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
@@ -43,15 +43,19 @@ const BookAppointment = () => {
     return d.toISOString().split("T")[0];
   });
 
+  const patientId = currentPatient.id || currentPatient._id;
+
   const isSlotBooked = (time: string) => {
-    return appointments.some(a => a.doctorId === doctor.id && a.date === selectedDate && a.time === time && a.patientId === currentPatient.id);
+    return appointments.some(
+      a => a.doctorId === doctor.id && a.date === selectedDate && a.time === time && a.patientId === patientId
+    );
   };
 
   const handleBook = () => {
     if (!selectedDate || !selectedTime) return;
     const queueInfo = getQueueInfo(doctor.id, selectedDate, selectedTime);
     bookAppointment({
-      patientId: currentPatient.id,
+      patientId: patientId,
       patientName: currentPatient.name,
       doctorId: doctor.id,
       doctorName: doctor.name,

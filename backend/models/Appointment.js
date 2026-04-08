@@ -1,17 +1,15 @@
 import mongoose from "mongoose";
 
 const appointmentSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-  doctorId: { type: mongoose.Schema.Types.ObjectId, ref: "Doctor" },
-  serviceId: { type: mongoose.Schema.Types.ObjectId, ref: "Service" },
-  type: String, // doctor / service
+  patientId: String,
+  patientName: String,
+  doctorId: String,
+  doctorName: String,
   date: String,
-  timeSlot: String,
-  status: { type: String, default: "booked" },
+  time: String,
+  fee: Number,
   tokenNumber: Number,
-  queuePosition: Number,
-  waitingTime: Number,
-  fees: Number,
+  status: { type: String, default: "pending" }
 });
 
 export default mongoose.model("Appointment", appointmentSchema);

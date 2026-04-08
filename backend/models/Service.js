@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const serviceSchema = new mongoose.Schema({
+  id: String,
   name: String,
   serviceType: String,
   fees: Number,
