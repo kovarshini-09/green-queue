@@ -81,6 +81,9 @@ const defaultDoctors: Doctor[] = [
   { id: "d4", name: "Dr. James Wilson", specialty: "Orthopedic", image: "👨‍⚕️", fee: 700, availableSlots: ["09:00", "10:00", "11:00", "14:00", "15:00", "16:00"], password: "doctor123" },
   { id: "d5", name: "Dr. Priya Sharma", specialty: "Pediatrician", image: "👩‍⚕️", fee: 550, availableSlots: ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "14:00", "14:30"], password: "doctor123" },
   { id: "d6", name: "Dr. Robert Lee", specialty: "ENT Specialist", image: "👨‍⚕️", fee: 650, availableSlots: ["09:00", "10:00", "11:00", "14:00", "15:00"], password: "doctor123" },
+  { id: "d7", name: "Dr. Ravi Kumar", specialty: "Neurologist", image: "👨‍⚕️", fee: 750, availableSlots: ["09:00", "10:00", "11:00", "14:00", "15:00"], password: "doctor123" },
+  { id: "d8", name: "Dr. Anjali Mehta", specialty: "Ophthalmologist", image: "👩‍⚕️", fee: 500, availableSlots: ["09:00", "09:30", "10:00", "10:30", "14:00", "14:30"], password: "doctor123" },
+  { id: "d9", name: "Dr. Karthika Raj", specialty: "Psychiatrist", image: "👨‍⚕️", fee: 900, availableSlots: ["10:00", "11:00", "12:00", "15:00", "16:00"], password: "doctor123" },
 ];
 
 const defaultServices: Service[] = [
@@ -88,6 +91,10 @@ const defaultServices: Service[] = [
   { id: "s2", name: "Thyroid", fee: 500, availableSlots: ["09:00", "09:30", "10:00", "10:30", "11:00", "14:00", "14:30", "15:00"] },
   { id: "s3", name: "X-Ray", fee: 800, availableSlots: ["09:00", "10:00", "11:00", "12:00", "14:00", "15:00", "16:00"] },
   { id: "s4", name: "CT Scan", fee: 3000, availableSlots: ["09:00", "10:00", "11:00", "14:00", "15:00"] },
+  { id: "s5", name: "Sugar Test", fee: 250, availableSlots: ["09:00","10:00","11:00","14:00"] },
+{ id: "s6", name: "MRI Scan", fee: 3500, availableSlots: ["09:00","11:00","14:00","16:00"] },
+{ id: "s7", name: "Glucose Test", fee: 200, availableSlots: ["09:00","10:00","11:00","15:00"] },
+  
 ];
 
 const defaultAssistants: Assistant[] = [
