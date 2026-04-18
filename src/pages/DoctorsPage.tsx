@@ -19,8 +19,8 @@ const doctorImages: Record<string, string> = {
   d4: doctor4, // Dr. Arjun Rao (male)
   d5: doctor5, // Dr. Nisha Kapoor (female)
   d6: doctor6, // Dr. Ravi Singh (male)
-  d7: doctor7, // Dr. Priya Sharma (female)
-  d8: doctor8, // Dr. Vikram Gupta (male)
+  d7: doctor7, // Dr. Vikram Gupta (male)
+  d8: doctor8, // Dr. Priya Sharma (female)
   d9: doctor9, // Dr. Anjali Verma (female)
   d10: doctor4, // Dr. Karan Mehta (male) - reusing male image
   d11: doctor5, // Dr. Sneha Agarwal (female) - reusing female image

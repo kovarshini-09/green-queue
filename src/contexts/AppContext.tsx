@@ -46,14 +46,14 @@ const defaultDoctors = [
   },
   {
     id: "d7",
-    name: "Dr. Priya Sharma",
+    name: "Dr. Vikram Gupta",
     specialty: "Gynecologist",
     fee: 520,
     availableSlots: ["09:00", "10:00", "11:00", "14:00", "15:00"],
   },
   {
     id: "d8",
-    name: "Dr. Vikram Gupta",
+    name: "Dr. Priya Sharma",
     specialty: "Neurologist",
     fee: 650,
     availableSlots: ["09:30", "10:30", "11:30", "14:30", "15:30"],
@@ -138,6 +138,9 @@ const assistantAccounts = [
   { id: "a2", name: "Thyroid Assistant", serviceId: "s2" },
   { id: "a3", name: "X-Ray Assistant", serviceId: "s3" },
   { id: "a4", name: "CT Assistant", serviceId: "s4" },
+  { id: "a5", name: "Blood Sugar Assistant", serviceId: "s5" },
+  { id: "a6", name: "MRI Assistant", serviceId: "s6" },
+  { id: "a7", name: "Glucose Assistant", serviceId: "s7" },
 ];
 
 const AppContext = createContext<any>(null);

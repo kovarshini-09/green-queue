@@ -5,9 +5,14 @@ import serviceBp from "@/assets/service-bp.jpg";
 import serviceThyroid from "@/assets/service-thyroid.jpg";
 import serviceXray from "@/assets/service-xray.jpg";
 import serviceCtscan from "@/assets/service-ctscan.jpg";
+import serviceGlucose from "@/assets/service-glucose.jpg";
+import serviceMri from "@/assets/service-mri.jpg";
+import serviceSugar from "@/assets/service-sugar.jpg";
+
 
 const serviceImages: Record<string, string> = {
   s1: serviceBp, s2: serviceThyroid, s3: serviceXray, s4: serviceCtscan,
+  s5: serviceSugar, s6: serviceMri, s7: serviceGlucose,
 };
 
 const AssistantDashboard = () => {
